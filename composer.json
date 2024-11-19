@@ -1,0 +1,14 @@
+{
+    "name": "aww/magazin_online",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "app/"
+        }
+    },
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.7",
+        "illuminate/database": "^11.32",
+        "laravel/serializable-closure": "^1.3"
+    }
+}
