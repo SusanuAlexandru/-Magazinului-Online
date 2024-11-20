@@ -4,43 +4,65 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as DB;
+use App\Models\Product;
 
 class ProductController
 {
-    // Obține toate produsele
-    public function getAllProducts(Request $request, Response $response): Response
+    // Detalii produs
+    public function getProductDetails(Request $request, Response $response, array $args)
     {
-        $products = DB::table('products')->get();
-        $response->getBody()->write($products->toJson());
-        return $response->withHeader('Content-Type', 'application/json');
+        $product = Product::find($args['id']);
+        ob_start();
+        require '../views/product_details.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
     }
 
-    // Adaugă un produs
-    public function addProduct(Request $request, Response $response): Response
+    // Căutare produse
+    public function searchProducts(Request $request, Response $response)
+    {
+        $query = $request->getQueryParams()['query'];
+        $products = Product::where('name', 'like', "%$query%")
+                           ->orWhere('description', 'like', "%$query%")
+                           ->get();
+
+        ob_start();
+        require '../views/search_results.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    // Produse dintr-o categorie
+    public function getProductProducts(Request $request, Response $response, array $args)
+    {
+        $product = Product::find($args['product_id']);
+        $products = $product->products;
+        ob_start();
+        require '../views/product_products.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    // Adăugare în coș
+    public function addToCart(Request $request, Response $response)
     {
         $data = $request->getParsedBody();
-
-        DB::table('products')->insert([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'price' => $data['price'],
-            'stock' => $data['stock'],
-            'category_id' => $data['category_id'],
-            'brand' => $data['brand'],
-        ]);
-
-        $response->getBody()->write('Product added successfully.');
-        return $response->withStatus(201);
+        // Adăugare produs în coș logică
+        return $response
+            ->withHeader('Location', '/cart')
+            ->withStatus(302);
     }
 
-    // Șterge un produs
-    public function deleteProduct(Request $request, Response $response, array $args): Response
+    // Eliminare din coș
+    public function removeFromCart(Request $request, Response $response)
     {
-        $productId = $args['id'];
-        DB::table('products')->where('id', $productId)->delete();
-
-        $response->getBody()->write('Product deleted successfully.');
-        return $response;
+        $data = $request->getParsedBody();
+        // Eliminare produs din coș logică
+        return $response
+            ->withHeader('Location', '/cart')
+            ->withStatus(302);
     }
 }

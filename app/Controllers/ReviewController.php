@@ -4,37 +4,70 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as DB;
+use App\Models\Review;
 
 class ReviewController
 {
-    // Adaugă o recenzie
-    public function addReview(Request $request, Response $response): Response
+    // Adăugare recenzie produs
+    public function addProductReview(Request $request, Response $response)
     {
-        $data = $request->getParsedBody();
-
-        // Introducem recenzia în baza de date
-        DB::table('reviews')->insert([
-            'product_id' => $data['product_id'],
-            'user_id' => $data['user_id'],
-            'rating' => $data['rating'],
-            'comment' => $data['comment'],
-            'created_at' => date('Y-m-d H:i:s') // Înlocuim now() cu date()
-        ]);
-
-        // Returnăm un răspuns de succes
-        $response->getBody()->write('Review added successfully.');
-        return $response->withStatus(201);
+        ob_start();
+        require '../views/add_review.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
     }
 
-
-    // Obține recenzii pentru un produs
-    public function getReviewsByProduct(Request $request, Response $response, $args): Response
+    // Vizualizare recenzii produs
+    public function getProductReviews(Request $request, Response $response, array $args)
     {
-        $productId = $args['product_id'];
-        $reviews = DB::table('reviews')->where('product_id', $productId)->get();
+        $reviews = Review::where('product_id', $args['product_id'])->get();
+        ob_start();
+        require '../views/product_reviews.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
 
-        $response->getBody()->write($reviews->toJson());
-        return $response->withHeader('Content-Type', 'application/json');
+    // Actualizare recenzie produs
+    public function updateProductReview(Request $request, Response $response, array $args)
+    {
+        $data = $request->getParsedBody();
+        $review = Review::find($args['review_id']);
+        $review->rating = $data['rating'] ?? $review->rating;
+        $review->comment = $data['comment'] ?? $review->comment;
+        $review->save();
+
+        return $response
+            ->withHeader('Location', '/reviews')
+            ->withStatus(302);
+    }
+
+    // Ștergere recenzie produs
+    public function deleteProductReview(Request $request, Response $response, array $args)
+    {
+        $review = Review::find($args['review_id']);
+        if ($review) {
+            $review->delete();
+        }
+
+        return $response
+            ->withHeader('Location', '/reviews')
+            ->withStatus(302);
+    }
+
+    // Evaluare produs
+    public function rateProduct(Request $request, Response $response)
+    {
+        $data = $request->getParsedBody();
+        $review = new Review();
+        $review->product_id = $data['product_id'];
+        $review->user_id = $data['user_id'];
+        $review->rating = $data['rating'];
+        $review->save();
+
+        return $response
+            ->withHeader('Location', '/reviews')
+            ->withStatus(302);
     }
 }
