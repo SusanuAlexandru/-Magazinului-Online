@@ -4,41 +4,57 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Illuminate\Database\Capsule\Manager as DB;
+use App\Models\User;
 
 class UserController
 {
-    // Obține toți utilizatorii
-    public function getAllUsers(Request $request, Response $response): Response
+    // Înregistrare utilizator
+    public function registerUser(Request $request, Response $response)
     {
-        $users = DB::table('users')->get();
-        $response->getBody()->write($users->toJson());
-        return $response->withHeader('Content-Type', 'application/json');
+        ob_start();
+        require '../views/register.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
     }
 
-    // Creează un utilizator
-    public function createUser(Request $request, Response $response): Response
+    // Autentificare utilizator
+    public function loginUser(Request $request, Response $response)
+    {
+        ob_start();
+        require '../views/login.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    // Deconectare utilizator
+    public function logoutUser(Request $request, Response $response)
+    {
+        // Logica de deconectare
+        return $response->withHeader('Location', '/login')->withStatus(302);
+    }
+
+    // Vizualizare profil utilizator
+    public function getUserProfile(Request $request, Response $response)
+    {
+        $user = User::find($request->getAttribute('user_id'));
+        ob_start();
+        require '../views/profile.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
+
+    // Actualizare profil utilizator
+    public function updateUserProfile(Request $request, Response $response)
     {
         $data = $request->getParsedBody();
-        $password = password_hash($data['password'], PASSWORD_BCRYPT);
+        $user = User::find($request->getAttribute('user_id'));
+        $user->update($data);
 
-        DB::table('users')->insert([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => $password,
-        ]);
-
-        $response->getBody()->write('User created successfully.');
-        return $response->withStatus(201);
-    }
-
-    // Șterge un utilizator
-    public function deleteUser(Request $request, Response $response, array $args): Response
-    {
-        $userId = $args['id'];
-        DB::table('users')->where('id', $userId)->delete();
-
-        $response->getBody()->write('User deleted successfully.');
-        return $response;
+        return $response
+            ->withHeader('Location', '/profile')
+            ->withStatus(302);
     }
 }
