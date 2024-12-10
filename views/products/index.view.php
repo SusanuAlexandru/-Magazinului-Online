@@ -1,3 +1,7 @@
+<?php 
+use App\Models\User;
+
+?>
 <style>
     body {
         background-color: #f3f4f6;
@@ -47,40 +51,58 @@
     </div>
 
     <!-- Buttons to navigate to "Add New Product" and "Add New Category" -->
-    <div class="row mb-4">
-        <div class="col text-center">
-            <a href="/products/create" class="btn btn-success me-2">Add New Product</a>
-            <a href="/categories/create" class="btn btn-success">Add New Category</a>
+    <?php if (isset($_SESSION['user_id']) && User::find($_SESSION['user_id'])->isAdmin()): ?>
+        <div class="row mb-4">
+            <div class="col text-center">
+                <a href="/products/create" class="btn btn-success me-2">Add New Product</a>
+                <a href="/categories/create" class="btn btn-success">Add New Category</a>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
+
+        <!-- Căutare și filtrare -->
+        <div class="row mb-4">
+            <div class="col">
+                <form action="/products" method="get" class="d-flex justify-content-center">
+                    <input type="text" name="query" class="form-control w-50 me-2" placeholder="Search products" value="<?= htmlspecialchars($query ?? '') ?>">
+                    <select name="categorie_id" class="form-select w-25 me-2">
+                        <option value="">Select Category</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= $category->id ?>" <?= isset($categoryId) && $categoryId == $category->id ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($category->name) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
 
     <!-- Product cards -->
     <div class="row g-4 mt-5">
         <?php if ($products->count() > 0): ?>
             <?php foreach ($products as $product): ?>
                 <div class="col-md-3">
-                    <div class="card" >
+                    <div class="card">
                         <!-- Product Image -->
-                         <div clas="form-control">
-                            <?php
-                            $imagePath = '/uploads/' . htmlspecialchars($product->image);
-                            // Verifică dacă fișierul imagine există
-                            
+                        <?php
+                        $imagePath = '/uploads/' . htmlspecialchars($product->image);
                         ?>
-                         </div>                     
-                        <img src="<?= $imagePath ?>" alt="<?= htmlspecialchars($product->image) ?>" class="card-img-top">
-                        
+                        <img src="<?= $imagePath ?>" alt="<?= htmlspecialchars($product->name) ?>" class="card-img-top">
+
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($product->name) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($product->description) ?></p>
                             <p class="price"><?= $product->price ?> MDL</p>
-                            <div class="d-flex justify-content gap-1">
-                                <a href="/products/edit/<?= $product->id ?>" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="/products/show/<?= $product->id ?>" class="btn btn-info btn-sm">View</a>
-                                <form action="/products/delete/<?= $product->id ?>" method="post" style="display:inline;">
-                                    <input type="hidden" name="_METHOD" value="DELETE"/>
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                            <div class="d-flex justify-content-between">
+                                <?php if (isset($_SESSION['user_id']) && User::find($_SESSION['user_id'])->isAdmin()): ?>
+                                    <a href="/products/edit/<?= $product->id ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <form action="/products/delete/<?= $product->id ?>" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                        <input type="hidden" name="_METHOD" value="DELETE"/>
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                <?php endif; ?>
+                                <a href="/products/show/<?= $product->id ?>" class="btn btn-info btn-sm">Details</a>
                             </div>
                         </div>
                     </div>
@@ -93,6 +115,7 @@
         <?php endif; ?>
     </div>
 </div>
+
 
 </body>
 </html>

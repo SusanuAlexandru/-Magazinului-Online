@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<?php include __DIR__ . '/../users/nav.view.php'; ?>
+<?php include '../views/nav.view.php'; ?>
     <div class="container">
         <div class="row py-2 justify-content-center h5">
             Edit Product
@@ -31,6 +31,9 @@
                         <img src="public/uploads/<?= htmlspecialchars($currentImage) ?>" alt="Product Image"
                             class="img-fluid" style="max-height: 200px;">
                     </div>
+                    <!-- Câmp ascuns pentru imaginea curentă -->
+                    <input type="hidden" name="current_image" value="<?= htmlspecialchars($product->image) ?>">
+
                     <!-- Product Name -->
                     <div class="mb-3">
                         <label for="name">Product Name</label>

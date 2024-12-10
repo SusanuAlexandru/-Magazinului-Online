@@ -7,7 +7,7 @@ use App\Controllers\UserController;
 use App\Controllers\ReviewController;
 use App\Controllers\OrderController;
 
-
+$app->get('/',[ProductController::class, 'home']);
 $app->get('/products', [ProductController::class, 'index']); 
 $app->get('/products/create', [ProductController::class, 'create']);
 $app->post('/products/store', [ProductController::class, 'store']); 
@@ -28,7 +28,6 @@ $app->delete('/categories/delete/{id}', [CategoryController::class, 'delete']); 
 $app->get('/categories/show/{id}', [CategoryController::class, 'show']);  // Afișează detaliile unei categorii
 
 //$app->redirect('/', '/index');
-$app->get('/',[UserController::class, 'index']);
 $app->get('/login', [UserController::class, 'login']);
 $app->get('/register', [UserController::class, 'register']);
 $app->post('/authenticate', [UserController::class, 'authenticate']);
@@ -46,10 +45,9 @@ $app->get('/reviews/edit/{id}', [ReviewController::class, 'edit']); // Formular 
 $app->post('/reviews/update/{id}', [ReviewController::class, 'update']); // Actualizează o recenzie
 $app->delete('/reviews/delete/{id}', [ReviewController::class, 'delete']); // Șterge o recenzie 
 
-$app->get('/cart', [OrderController::class, 'cart']); // Afișează coșul de cumpărături
-$app->post('/cart/add', [OrderController::class, 'addToCart']); // Adaugă un produs în coș
-$app->post('/cart/update', [OrderController::class, 'updateCart']); // Actualizează cantitatea produselor în coș
-$app->get('/cart/remove/{product_id}', [OrderController::class, 'removeFromCart']); // Șterge un produs din coș
-$app->post('/order/store', [OrderController::class, 'store']); // Creează o comandă din coșul de cumpărături
-$app->get('/orders', [OrderController::class, 'index']); // Afișează comenzile utilizatorului
-$app->get('/orders/show/{id}', [OrderController::class, 'show']); // Afișează detaliile unei comenzi
+$app->get('/cart', [OrderController::class, 'cart']);
+$app->post('/cart/add', [OrderController::class, 'addToCart']);
+$app->post('/cart/update', [OrderController::class, 'updateCart']);
+$app->post('/cart/store', [OrderController::class, 'store']);
+$app->delete('/cart/remove/{product_id}', [OrderController::class, 'removeFromCart']);
+

@@ -61,21 +61,7 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : null; // Numele utilizatorulu
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#product-section">Products</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Category
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <?php if (isset($categories) && count($categories) > 0): ?>
-                <?php foreach ($categories as $category): ?>
-                <li><a class="dropdown-item" href="/category/<?= $category->id ?>"><?= htmlspecialchars($category->name) ?></a></li>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <li><a class="dropdown-item" href="#">No categories available</a></li>
-                <?php endif; ?>
-          </ul>
+          <a class="nav-link active" aria-current="page" href="/">Products</a>
         </li>
         <li class="nav-item">
           <a class="nav-link fa fa-shopping-cart" style="font-size:25px;color:white" href="/cart"></a>

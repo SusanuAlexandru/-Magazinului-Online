@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details</title>
-    <?php include __DIR__ . '/../users/nav.view.php'; ?>
+    <?php include '../views/nav.view.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
        .product-card img {
@@ -73,7 +73,11 @@
                                 <p class="card-text"><strong>Descriere:</strong> <?php echo nl2br(htmlspecialchars($product->description)); ?></p>
                                 <p class="card-text"><strong>Pret:</strong> <?php echo number_format($product->price, 2); ?> MDL</p>
                                 <p class="card-text"><strong>Stock:</strong> <?php echo htmlspecialchars($product->stock); ?> items available</p>
-                                <a href="/cart/add" class="btn btn-buy btn-primary">Adauga in cos</a>
+                                <form action="/cart/add" method="post">
+                                    <input type="hidden" name="product_id" value="<?= $product->id ?>">
+                                    <input type="hidden" name="quantity" value="1"> <!-- Poți adăuga un input pentru cantitate dacă vrei să o modifici -->
+                                    <button type="submit" class="btn btn-buy btn-primary">Adauga in cos</button>
+                                </form>
                             </div>
                         </div>
                     </div>

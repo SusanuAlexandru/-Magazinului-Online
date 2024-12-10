@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Gazdă: 127.0.0.1
--- Timp de generare: dec. 04, 2024 la 09:13 AM
--- Versiune server: 10.4.32-MariaDB
--- Versiune PHP: 8.2.12
+-- Хост: 127.0.0.1
+-- Время создания: Дек 11 2024 г., 00:27
+-- Версия сервера: 10.4.32-MariaDB
+-- Версия PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Bază de date: `magazin_sport`
+-- База данных: `magazin_sport`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `categories`
+-- Структура таблицы `categories`
 --
 
 CREATE TABLE `categories` (
@@ -35,18 +35,22 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Eliminarea datelor din tabel `categories`
+-- Дамп данных таблицы `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'ciclizm', '2024-11-26 17:27:19', '2024-11-26 17:27:19'),
-(3, 'echipament sport', '2024-12-04 06:48:18', '2024-12-04 06:48:18'),
-(4, 'imbracaminte', '2024-12-04 06:49:58', '2024-12-04 06:49:58');
+(1, 'Ciclizm', '2024-11-26 17:27:19', '2024-12-10 18:58:00'),
+(3, 'Tenis', '2024-12-10 21:49:43', '2024-12-10 21:49:43'),
+(4, 'Fotbal', '2024-12-10 21:52:46', '2024-12-10 21:52:46'),
+(5, 'Fitness', '2024-12-10 22:03:50', '2024-12-10 22:03:50'),
+(6, 'Yoga', '2024-12-10 22:04:52', '2024-12-10 22:04:52'),
+(7, 'Drumeție', '2024-12-10 22:08:29', '2024-12-10 22:08:29'),
+(8, 'Box', '2024-12-10 22:19:24', '2024-12-10 22:19:24');
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `orders`
+-- Структура таблицы `orders`
 --
 
 CREATE TABLE `orders` (
@@ -61,7 +65,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `order_items`
+-- Структура таблицы `order_items`
 --
 
 CREATE TABLE `order_items` (
@@ -76,7 +80,7 @@ CREATE TABLE `order_items` (
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `products`
+-- Структура таблицы `products`
 --
 
 CREATE TABLE `products` (
@@ -93,20 +97,23 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Eliminarea datelor din tabel `products`
+-- Дамп данных таблицы `products`
 --
 
 INSERT INTO `products` (`id`, `image`, `name`, `description`, `price`, `stock`, `category_id`, `brand`, `created_at`, `updated_at`) VALUES
-(12, '675007694c283_Tandemul--o-bicicleta-la-moda.jpg', 'Bicicleta', 'cu 2 \r\nlocuri', 2456.00, 32, 1, 'SportTech', '2024-12-03 10:36:57', '2024-12-04 06:40:26'),
-(30, '675007f89d032_img_3786.jpg', 'Trotineta', 'Trotineta electica', 15000.00, 3, 1, 'SportTech', '2024-12-04 06:42:48', '2024-12-04 06:42:48'),
-(31, '675008e380105_role-fila-amdame-houdini-black-grey-salmonjpg-2021.image.260x260.jpg', 'Role', 'Viteza rapida', 8000.00, 5, 1, 'Cube', '2024-12-04 06:46:43', '2024-12-04 06:46:43'),
-(33, '675009b6d214c_images (6).jpg', 'Costum sport', 'Confortabil si comod', 750.00, 21, 4, 'SportTech', '2024-12-04 06:49:42', '2024-12-04 06:50:14'),
-(34, '675009f6513c0_images (7).jpg', 'Adidasi', 'marime 36-42', 990.00, 7, 4, 'SportTech', '2024-12-04 06:51:18', '2024-12-04 06:51:18');
+(13, '6758c62741829_fh7362-3.jpg', 'Minge de fotbal \"ProKick\"', 'Minge de fotbal profesională, confecționată din piele sintetică de calitate', 120.00, 43, 4, 'Adidas', '2024-12-03 10:38:04', '2024-12-10 21:52:56'),
+(14, '6758c5280e810_tipos_de_deportes_con_raqueta_52596_orig.jpg', ' Racheta de tenis \"SpeedMaster\"', ' Rachetă ușoară, ideală pentru jocuri de viteză și precizie', 550.00, 32, 3, ' Wilson', '2024-12-03 10:43:03', '2024-12-10 21:49:56'),
+(30, '6758c80301281_pexels-luftschnitzel-100582.jpg', ' Bicicletă de munte \"MountainX\"', 'Bicicletă robustă, perfectă pentru trasee montane dificile', 1800.00, 20, 1, 'Trek', '2024-12-10 21:44:28', '2024-12-10 22:00:19'),
+(31, '6758c6fecb594_26e1ac1d1989bd5fda1aed3b092da79d.webp', 'Set de gantere reglabile \"FitPower\"', ' Set de gantere reglabile, cu greutăți ajustabile ', 350.00, 50, 5, 'Reebok', '2024-12-10 21:55:58', '2024-12-10 22:05:03'),
+(32, '6758c86daecbc_saltea-yoga-sportmann-trikona-verde.jpg', 'Saltea de yoga \"ZenirMater\"', 'Saltea confortabilă pentru yoga, cu aderență excelentă', 100.00, 60, 6, 'Nike', '2024-12-10 22:02:05', '2024-12-10 22:05:18'),
+(33, '6758c9ad02f64_rucsac_drumetie_-_trekking_pinguin_activent_55l-_verde_2020_.jpg', 'Rucsac de drumeție \"TrailBlazer\"', 'ucsac ergonomic, cu multiple compartimente', 250.00, 10, 7, 'The North Face', '2024-12-10 22:07:25', '2024-12-10 22:08:37'),
+(34, '6758cb095ac2e_manusi-box-kickboxing-pro-armura-piele-639739.webp', 'Mănuși de box \"FightMaster\"', 'Mănuși de box din piele sintetică, cu protecție suplimentară', 700.00, 15, 8, 'Everlast', '2024-12-10 22:10:58', '2024-12-10 22:19:40'),
+(35, '6758cb9b160df_Spiuk---Casca-ciclism-DHARMA-Edition-helmet---portocaliu-flacara-negru.jpg', 'Casca de ciclism \"SpeedGuard\"', 'Cască de ciclism ușoară și bine ventilată, cu protecție sporită', 500.00, 20, 1, 'Giro', '2024-12-10 22:15:39', '2024-12-10 22:15:39');
 
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `reviews`
+-- Структура таблицы `reviews`
 --
 
 CREATE TABLE `reviews` (
@@ -120,10 +127,24 @@ CREATE TABLE `reviews` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Дамп данных таблицы `reviews`
+--
+
+INSERT INTO `reviews` (`id`, `product_id`, `user_id`, `rating`, `comment`, `review_date`, `created_at`, `updated_at`) VALUES
+(7, 13, 1, 3, 'gfbfdxb', '2024-12-03 20:31:51', '2024-12-03 20:31:52', '2024-12-03 20:31:52'),
+(8, 13, 1, 3, 'vdv', '2024-12-03 20:43:14', '2024-12-03 20:43:14', '2024-12-03 20:43:14'),
+(9, 13, 1, 3, 'vdv', '2024-12-03 20:43:57', '2024-12-03 20:43:57', '2024-12-03 20:43:57'),
+(10, 13, 1, 3, 'xfg x', '2024-12-03 20:44:04', '2024-12-03 20:44:04', '2024-12-03 20:44:04'),
+(11, 14, 1, 3, 'Se poate mai bine', '2024-12-03 21:32:50', '2024-12-03 21:32:50', '2024-12-03 21:32:50'),
+(12, 13, 1, 3, 'Se poate mai bine', '2024-12-03 22:14:42', '2024-12-03 22:14:42', '2024-12-03 22:14:42'),
+(13, 13, 3, 2, 'fnftynd', '2024-12-10 16:43:39', '2024-12-10 16:43:39', '2024-12-10 16:43:39'),
+(14, 14, 2, 5, 'Foarte bine', '2024-12-10 18:00:48', '2024-12-10 18:00:48', '2024-12-10 18:00:48');
+
 -- --------------------------------------------------------
 
 --
--- Structură tabel pentru tabel `users`
+-- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
@@ -131,36 +152,38 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Eliminarea datelor din tabel `users`
+-- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'Cristi', 'testemail@gmail.com', '$2y$10$0H.EvsXu7alXRFveOYjdSOH.hCzv7nloM.JlktwYeHSdx.hMhnGju', '2024-12-03 05:21:01', '2024-12-03 05:21:01');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
+(2, 'Alex', 'testemail@gmail.com', '$2y$10$4kmYz.X4.g6anUd5U.EYLer5kffA9paVheFzSqGUdb5tSzBKUr8fK', 'user', '2024-12-10 14:27:49', '2024-12-10 22:39:35'),
+(3, 'Alexandru', 'susanu.alexandru@elev.cihcahul.md', '$2y$10$94J5dwBf/4PwmZ0jAIOKreKkMEGJbXnBA13FdYdoJW8zU09dmaEJq', 'admin', '2024-12-10 14:56:58', '2024-12-10 14:56:58');
 
 --
--- Indexuri pentru tabele eliminate
+-- Индексы сохранённых таблиц
 --
 
 --
--- Indexuri pentru tabele `categories`
+-- Индексы таблицы `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexuri pentru tabele `orders`
+-- Индексы таблицы `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indexuri pentru tabele `order_items`
+-- Индексы таблицы `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
@@ -168,91 +191,91 @@ ALTER TABLE `order_items`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexuri pentru tabele `products`
+-- Индексы таблицы `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indexuri pentru tabele `reviews`
+-- Индексы таблицы `reviews`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexuri pentru tabele `users`
+-- Индексы таблицы `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT pentru tabele eliminate
+-- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT pentru tabele `categories`
+-- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT pentru tabele `orders`
+-- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pentru tabele `order_items`
+-- AUTO_INCREMENT для таблицы `order_items`
 --
 ALTER TABLE `order_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pentru tabele `products`
+-- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT pentru tabele `reviews`
+-- AUTO_INCREMENT для таблицы `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT pentru tabele `users`
+-- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constrângeri pentru tabele eliminate
+-- Ограничения внешнего ключа сохраненных таблиц
 --
 
 --
--- Constrângeri pentru tabele `orders`
+-- Ограничения внешнего ключа таблицы `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Constrângeri pentru tabele `order_items`
+-- Ограничения внешнего ключа таблицы `order_items`
 --
 ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Constrângeri pentru tabele `products`
+-- Ограничения внешнего ключа таблицы `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
--- Constrângeri pentru tabele `reviews`
+-- Ограничения внешнего ключа таблицы `reviews`
 --
 ALTER TABLE `reviews`
   ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;

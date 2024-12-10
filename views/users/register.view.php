@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<?php include 'nav.view.php'; ?>
+<?php include '../views/nav.view.php'; ?>
     <div class="container col-4 mt-5">
         <h1>Sing Up</h1>
         

@@ -14,6 +14,7 @@ class User extends Model
         'name',
         'email',
         'password',
+        'role'
     ];
 
     // Ascunde parola în serializări
@@ -24,5 +25,9 @@ class User extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class, 'user_id', 'id');
+    }
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
     }
 }

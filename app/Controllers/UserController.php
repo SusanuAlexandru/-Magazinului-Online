@@ -10,17 +10,6 @@ use App\Models\Category;
 
 class UserController
 {
-    // Pagina principala
-    public function index(Request $request, Response $response)
-    {
-        $products = Product::all();
-        ob_start();
-        require_once '../views/users/index.view.php';
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
-    }
-
     // Formular de autentificare
     public function login(Request $request, Response $response)
     {
@@ -39,11 +28,12 @@ class UserController
         $password = $data['password'];
 
         $user = User::where('email', $email)->first();
-        
+
         if ($user && password_verify($password, $user->password)) {
             session_start();
             $_SESSION['user_id'] = $user->id;
             $_SESSION['user_name'] = htmlspecialchars($user->name);
+            $_SESSION['user_role'] = $user->role; // Salvăm rolul utilizatorului în sesiune
 
             return $response->withHeader('Location', '/profile')->withStatus(302);
         } else {
@@ -72,15 +62,24 @@ class UserController
             $_SESSION['error'] = 'Adresa de email este deja utilizată.';
             return $response->withHeader('Location', '/register')->withStatus(302);
         }
-
+        
+        // Creare utilizator nou
         $user = new User();
         $user->name = htmlspecialchars($data['name']);
         $user->email = htmlspecialchars($data['email']);
         $user->password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+        // Atribuire rol (admin sau user)
+        $adminEmails = ['susanu.alexandru@elev.cihcahul.md']; // Lista emailurilor de admin
+        $user->role = in_array($data['email'], $adminEmails) ? 'admin' : 'user';
+
         $user->save();
 
+        // Mesaj de succes și redirecționare la login
+        $_SESSION['success'] = 'Contul a fost creat cu succes!';
         return $response->withHeader('Location', '/login')->withStatus(302);
     }
+
 
     // Afișare profil utilizator
     public function profile(Request $request, Response $response)
@@ -107,7 +106,7 @@ class UserController
         }
 
         ob_start();
-        require_once '../views/users/edit_password.view.php'; // Formular pentru resetarea parolei
+        require_once '../views/users/edit_password.view.php';
         $html = ob_get_clean();
         $response->getBody()->write($html);
         return $response;
@@ -127,7 +126,6 @@ class UserController
         $newPassword = $data['password'];
         $confirmPassword = $data['password_confirmation'];
 
-        // Verificăm dacă parolele sunt identice
         if ($newPassword !== $confirmPassword) {
             $_SESSION['error'] = 'Parolele nu se potrivesc!';
             return $response->withHeader('Location', '/editPassword')->withStatus(302);

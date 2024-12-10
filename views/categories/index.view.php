@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
 <body>
-<?php include __DIR__ . '/../users/nav.view.php'; ?>
+<?php include '../views/nav.view.php'; ?>
     <div class="container">
         <div class="row py-2 justify-content-center h5">
             Categories
@@ -35,7 +35,7 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <a href="/categories/add" class="btn btn-sm btn-primary">Add New Category</a>
+                <a href="/categories/create" class="btn btn-sm btn-primary">Add New Category</a>
             </div>
         </div>
     </div>

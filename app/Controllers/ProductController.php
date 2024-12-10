@@ -2,27 +2,65 @@
 
 namespace App\Controllers;
 
+session_start();
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
+use App\Models\User;
 
 class ProductController
 {
+    // Pagina principală
+    public function home(Request $request, Response $response)
+     {
+        $products = Product::all();
+        ob_start();
+        require_once '../views/index.view.php';
+        $html = ob_get_clean();
+        $response->getBody()->write($html);
+        return $response;
+    }
+
     public function index(Request $request, Response $response, $args)
     {
-        $products = Product::all();
+        // Obține parametrii query (căutare și categorie)
+        $query = $request->getQueryParams()['query'] ?? '';
+        $categoryId = $request->getQueryParams()['categorie_id'] ?? null;
+    
+        // Construiește interogarea pentru produse
+        $productsQuery = Product::query();
+    
+        // Filtrează după termenul de căutare (nume produs)
+        if (!empty($query)) {
+            $productsQuery->where('name', 'like', '%' . $query . '%');
+        }
+    
+        // Filtrează după categorie, dacă a fost selectată
+        if (!empty($categoryId)) {
+            $productsQuery->where('category_id', $categoryId);
+        }
+    
+        // Adaugă o ordine implicită (opțional)
+        $products = $productsQuery->orderBy('name', 'asc')->get();
+    
+        // Obține toate categoriile pentru dropdown-ul de filtrare
+        $categories = Category::all();
+    
+        // Include view-ul și trimite variabilele necesare
         ob_start();
         require '../views/products/index.view.php';
         $html = ob_get_clean();
+    
+        // Returnează răspunsul cu conținutul generat
         $response->getBody()->write($html);
         return $response;
     }
 
     public function create(Request $request, Response $response, $args)
     {
-        
         $categories = Category::all();
         ob_start();
         require '../views/products/create.view.php';
@@ -92,9 +130,9 @@ class ProductController
             
             // Setează noul nume al imaginii
             $product->image = $filename;
-        }else {
-            // Gestionarea erorilor (opțional)
-            $product['image'] = 'default.png'; // Imagine implicită
+        } else {
+            // Dacă nu s-a trimis o imagine nouă, păstrăm imaginea curentă
+            $product->image = $data['current_image'];
         }
         
         // Actualizăm restul câmpurilor
@@ -104,9 +142,10 @@ class ProductController
         $product->save();
         
         return $response
-            ->withHeader('Location', '/')
-            ->withStatus(302);
+        ->withHeader('Location', '/')
+        ->withStatus(302);
     }
+
     
 
     public function delete(Request $request, Response $response, $args)
@@ -115,7 +154,15 @@ class ProductController
         $product = Product::find($args['id']);
         
         if ($product) {
-            // Șterge produsul
+            // Șterge fișierul imaginii, dacă există și nu este implicit
+            if ($product->image && $product->image !== 'default.png') {
+                $imagePath = '../public/uploads/' . $product->image;
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            
+            // Șterge produsul din baza de date
             $product->delete();
         }
     
@@ -124,6 +171,7 @@ class ProductController
             ->withHeader('Location', '/')
             ->withStatus(302);
     }
+    
     
     public function show(Request $request, Response $response, $args)
     {
@@ -137,56 +185,5 @@ class ProductController
         $response->getBody()->write($html);
         return $response;
     }
-
     
-    public function search(Request $request, Response $response, $args)
-    {
-        // Obține parametrii de căutare
-        $queryParams = $request->getQueryParams();
-        $searchTerm = $queryParams['search'] ?? '';
-
-        // Caută produsele după nume, categorie sau sport
-        $products = Product::query()
-            ->where('name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('category', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('sport', 'LIKE', "%{$searchTerm}%")
-            ->get();
-
-        ob_start();
-        require '../views/products/search.view.php';
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    public function filter(Request $request, Response $response, $args)
-    {
-        // Obține parametrii de filtrare
-        $queryParams = $request->getQueryParams();
-        $products = Product::query();
-
-        if (!empty($queryParams['type'])) {
-            $products = $products->where('type', $queryParams['type']);
-        }
-        if (!empty($queryParams['price_min'])) {
-            $products = $products->where('price', '>=', $queryParams['price_min']);
-        }
-        if (!empty($queryParams['price_max'])) {
-            $products = $products->where('price', '<=', $queryParams['price_max']);
-        }
-        if (!empty($queryParams['brand'])) {
-            $products = $products->where('brand', $queryParams['brand']);
-        }
-        if (!empty($queryParams['sport'])) {
-            $products = $products->where('sport', $queryParams['sport']);
-        }
-
-        $products = $products->get();
-
-        ob_start();
-        require '../views/products/filter.view.php';
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
-    }
 }

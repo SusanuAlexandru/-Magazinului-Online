@@ -134,40 +134,5 @@ class ReviewController
         $response->getBody()->write($html);
         return $response;
     }
-    
 
-
-
-    // Afișează formularul pentru editarea unei recenzii
-    public function edit(Request $request, Response $response, $args)
-    {
-        $review = Review::find($args['id']);
-
-        ob_start();
-        require '../views/reviews/edit.view.php'; // Formular pentru editare
-        $html = ob_get_clean();
-        $response->getBody()->write($html);
-        return $response;
-    }
-
-    // Actualizează o recenzie în baza de date
-    public function update(Request $request, Response $response, $args)
-    {
-        $data = $request->getParsedBody();
-        $review = Review::find($args['id']);
-        $review->rating = (int) $data['rating'];
-        $review->comment = htmlspecialchars($data['comment']);
-        $review->save();
-
-        return $response->withHeader('Location', "/reviews/index/{$review->product_id}")->withStatus(302);
-    }
-
-    // Șterge o recenzie
-    public function delete(Request $request, Response $response, $args)
-    {
-        $review = Review::find($args['id']);
-        $review->delete();
-
-        return $response->withHeader('Location', "/reviews/index/{$review->product_id}")->withStatus(302);
-    }
 }

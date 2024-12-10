@@ -79,7 +79,7 @@
         </div>
     </header>
     <?php
-        include __DIR__ . '/../products/index.view.php';
+        include 'products/index.view.php';
     ?>
 
    

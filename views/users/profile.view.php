@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-<?php include 'nav.view.php'; ?>
+<?php include '../views/nav.view.php'; ?>
 
 <div class="container d-flex justify-content-center">
     <div class="col-md-8 profile-container">
