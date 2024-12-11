@@ -115,7 +115,5 @@ use App\Models\User;
         <?php endif; ?>
     </div>
 </div>
-
-
 </body>
 </html>
