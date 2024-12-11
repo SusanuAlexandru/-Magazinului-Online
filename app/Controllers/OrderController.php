@@ -82,7 +82,7 @@ class OrderController
         $order = Order::create([
             'user_id' => $userId,
             'status' => 'pending', // Statusul inițial al comenzii
-            'order_date' => now(), // Data comenzii
+            'order_date' => date('Y-m-d H:i:s'), // Data comenzii
         ]);
 
         // Adaugă articolele din coș în tabela order_items

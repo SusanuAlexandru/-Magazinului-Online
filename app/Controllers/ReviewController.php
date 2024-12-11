@@ -20,7 +20,8 @@ class ReviewController
         // Validare: produsul trebuie să existe
         $product = Product::find($productId);
         if (!$product) {
-            return $response->withStatus(404)->write('Produsul nu există.');
+            $response->getBody()->write('Produsul nu există.');
+            return $response->withStatus(404);
         }
 
         $reviews = Review::where('product_id', $productId)
@@ -44,7 +45,9 @@ class ReviewController
         // Validare: produsul trebuie să existe
         $product = Product::find($productId);
         if (!$product) {
-            return $response->withStatus(404)->write('Produsul nu există.');
+            $response->getBody()->write('Produsul nu există.');
+            return $response->withStatus(404);
+
         }
 
         ob_start();
@@ -81,7 +84,9 @@ class ReviewController
 
         // Validare: rating-ul trebuie să fie între 1 și 5
         if (!is_numeric($rating) || $rating < 1 || $rating > 5) {
-            return $response->withStatus(400)->write('Rating-ul trebuie să fie între 1 și 5.');
+            $response->getBody()->write('Rating-ul trebuie să fie între 1 și 5.');
+            return $response->withStatus(400);
+
         }
 
         // Creează și salvează recenzia

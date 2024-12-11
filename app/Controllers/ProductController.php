@@ -177,7 +177,9 @@ class ProductController
     {
         $product = Product::find($args['id']);
         if (!$product) {
-            return $response->withStatus(404)->write('Produsul nu a fost găsit');
+            $response->getBody()->write('Produsul nu a fost gasit.');
+            return $response->withStatus(404);
+
         }
         ob_start();
         require '../views/products/show.view.php'; // Asigură-te că fișierul corect este încărcat
