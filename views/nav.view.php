@@ -64,6 +64,9 @@ $userName = $isLoggedIn ? $_SESSION['user_name'] : null; // Numele utilizatorulu
           <a class="nav-link active" aria-current="page" href="/">Products</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/categories">Category</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link fa fa-shopping-cart" style="font-size:25px;color:white" href="/cart"></a>
         </li>
         
