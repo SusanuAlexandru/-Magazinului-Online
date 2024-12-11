@@ -6,9 +6,6 @@ use App\Models\User;
     body {
         background-color: #f3f4f6;
     }
-    .card {
-        
-    }
     .card:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
